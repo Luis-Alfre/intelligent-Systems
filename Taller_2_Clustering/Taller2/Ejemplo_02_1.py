@@ -19,31 +19,33 @@ img1 = cv.imread('fire2.tif',1)
 
 # convertimos la imagen a RGB
 
-img2 = cv.cvtColor(img1, cv.COLOR_BGR2RGB)
-
-w, h, d = original_shape = img2.shape
-img = img2.reshape(w*h, d) 
+img2 = cv.cvtColor(img1, cv.COLOR_BGR2HSV)
 
 
-kmeans = KMeans(n_clusters=3, random_state=0)
-kmeans.fit(img)
-
-
-cluster_center = kmeans.cluster_centers_
-cluster_center = np.array(cluster_center, 'uint8')
-cluster_labels  = kmeans.labels_
 
 # Desplegamos la imagen
 plt.imshow(img2)
 plt.xticks([]), plt.yticks([])  # Oculta los valores en X e Y.
 plt.show()
 
-s = cluster_center[cluster_labels].reshape(w,h,d)
-print ()
+colors = np.array([[0,0,255],
+                   [255, 255, 0], 
+                   [0, 255, 255]], 'uint8')
+
+w, h, d = original_shape = img2.shape
+img = img2.reshape(w*h, d) 
+
+kmeans = KMeans(n_clusters=3, random_state=0)
+kmeans.fit(img)
+
+
+cluster_center = kmeans.cluster_centers_
+cluster_labels = kmeans.labels_
+
+
 plt.figure(2)
 plt.suptitle('k-means')
-plt.imshow(cluster_center[cluster_labels].reshape(w,h,d))
-plt.scatter(data[:50,0],data[:50,3],color ='red', label = 'Setosa')
+plt.imshow(colors[cluster_labels].reshape(w, h, d))
 plt.show()
 
 

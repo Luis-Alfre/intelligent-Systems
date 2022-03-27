@@ -60,39 +60,7 @@ def knn(datos, clase, x, k):
 # res4 = np.zeros(30)
 # res5 = np.zeros(30)
 
-k = 5
-
-t1 = 0
-t2 = 50
-t3 = 100
-
-print('k = ',k,'\n')
-
-for it in range(5):
-
-    res = np.zeros(30)
-    testSub1 = np.concatenate((data[t1:(t1+10),:], data[t2:(t2+10),:],data[t3:(t3+10),:]), axis=0)
-    train = np.concatenate((np.delete(data[:50,:], slice(t1,t1+10),0), np.delete(data[50:100,:], slice(t2-50,t2+10-50),0), np.delete(data[100:150,:], slice(t3-100,t3+10-100),0)), axis=0)
-
-    datos = train[:,:4]
-    clase = train[:,4]
-    for i in range(30):
-        x = testSub1[i,:4]
-        res[i]= knn(datos,clase,x,k)
-
-    t1+=10
-    t2+=10
-    t3+=10
-    claseTest = testSub1[:,4]
-    print('Subconjunto # ', it+1)
-    print('Clases reales', claseTest)
-    print('Clases Obtenidas', res)
-    print('# Desaciertos ', np.sum((res!=claseTest).astype(int)))
-    error = (np.sum((res!=claseTest).astype(int))/30)*100
-
-    print('Porcentaje error ',error,'% \n')
-
-
+c
 # claseTest = testSub1[:,4]
 # error = (np.sum((res1!=claseTest).astype(int))/75)*100
 # print(error)
