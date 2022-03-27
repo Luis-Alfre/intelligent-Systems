@@ -38,10 +38,12 @@ plt.imshow(img2)
 plt.xticks([]), plt.yticks([])  # Oculta los valores en X e Y.
 plt.show()
 
-
+s = cluster_center[cluster_labels].reshape(w,h,d)
+print ()
 plt.figure(2)
 plt.suptitle('k-means')
 plt.imshow(cluster_center[cluster_labels].reshape(w,h,d))
+plt.scatter(data[:50,0],data[:50,3],color ='red', label = 'Setosa')
 plt.show()
 
 
