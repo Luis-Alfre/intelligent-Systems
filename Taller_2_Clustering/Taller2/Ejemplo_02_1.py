@@ -17,9 +17,9 @@ from sklearn.cluster import KMeans
 
 img1 = cv.imread('fire2.tif',1)
 
-# convertimos la imagen a RGB
+# convertimos la imeagen a RGB
 
-img2 = cv.cvtColor(img1, cv.COLOR_BGR2HSV)
+img2 = cv.cvtColor(img1, cv.COLOR_BGR2RGB)
 
 
 
