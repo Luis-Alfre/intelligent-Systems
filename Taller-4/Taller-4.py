@@ -67,6 +67,8 @@ def knn(dataset):
 
     knn.fit(X_train, Y_train)
     predictions = knn.predict(X_validation)
+    print(predictions)
+    print(Y_validation)
     print("El procentaje de acierto es: %s" % accuracy_score(Y_validation, predictions))
     print(confusion_matrix(Y_validation, predictions))
 
@@ -105,6 +107,10 @@ def kmeans(dataset):
         datos.append(label+1)
     
     print("El procentaje de acierto es: %s" % accuracy_score(clases, (datos)))
+    print('# Desaciertos ', np.sum((datos!=clases).astype(int)))
+    error = (np.sum((datos!=clases).astype(int))/178)*100
+    print('Porcentaje error ',error,'%')
+
 
     c1 = array[labels[:]==0]
     c2 = array[labels[:]==1]
@@ -112,9 +118,9 @@ def kmeans(dataset):
 
     plt.figure(3)
     plt.suptitle('Agurpamiento por kmeans')
-    plt.scatter(c1[:,1],c1[:,12],color ='red', label = 'Clase 1')
-    plt.scatter(c2[:,1],c2[:,12],color ='blue', label = 'Clase 2')
-    plt.scatter(c3[:,1],c3[:,12],color ='y', label = 'Clase 3')
+    plt.scatter(c1[:,1],c1[:,2],color ='red', label = 'Clase 1')
+    plt.scatter(c2[:,1],c2[:,2],color ='blue', label = 'Clase 2')
+    plt.scatter(c3[:,1],c3[:,2],color ='y', label = 'Clase 3')
     plt.legend()
     plt.show()
 
@@ -136,12 +142,13 @@ def estadisticas(dataset):
 # graficar(dataset,'Magnesium','Flavanoids')
 # graficar(dataset,'Alcalinity-of-ash','Nonflavanoid-phenols')
 
-#kmeans(dataset)
+
+# kmeans(dataset)
 
 #estadisticas(dataset)
 
 #knn(dataset)
 
-validacionCruzada(dataset)
+#validacionCruzada(dataset)
 
 
