@@ -14,13 +14,16 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 
-url = "parkinsons.data"
+url = "cmc.data"
 
 
 def getData(url):
     # Se crea un data frame
     dataset = pandas.read_csv(url)
-    dataset = dataset.drop(['name'], axis=1)
+    names = ['wife-age', 'wife-aeducation', 'husband-edcation', 'number-children', 'wife-religion', 'wife-working', 'husband-occupation', 
+             'standard-living','media-exposure', 'method']
+    # Se crea un data frame
+    dataset = pandas.read_csv(url, names=names)
     return dataset
 
 
@@ -29,19 +32,25 @@ def graph(dataset, caracteritica1, caracteristica2):
     fig = plt.figure('scatter')
 
     ax = fig.add_subplot(111)
-    titulo = 'c1 vs c2 con caract. ', caracteritica1,  'y', caracteristica2
+    titulo = 'M1 vs M2 vs M3 con caract. ', caracteritica1,  'y', caracteristica2
 
     ax.set_title(titulo)
 
-    c1 = dataset.loc[dataset['status'] == 0]
+    c1 = dataset.loc[dataset['method'] == 1]
     carac1 = c1.loc[:, caracteritica1]
     carac2 = c1.loc[:, caracteristica2]
-    ax.scatter(carac1, carac2, c='r', label='clase 1')
+    ax.scatter(carac1, carac2, c='r', label='metodo 1')
 
-    c2 = dataset.loc[dataset['status'] == 1]
+    c2 = dataset.loc[dataset['method'] == 2]
     carac1 = c2.loc[:, caracteritica1]
     carac2 = c2.loc[:, caracteristica2]
-    ax.scatter(carac1, carac2, c='b', label='clase 2')
+    ax.scatter(carac1, carac2, c='b', label='metodo 2')
+    
+    
+    c3 = dataset.loc[dataset['method'] == 3]
+    carac1 = c3.loc[:, caracteritica1]
+    carac2 = c3.loc[:, caracteristica2]
+    ax.scatter(carac1, carac2, c='y', label='metodo 2')
 
     ax.set_xlabel(caracteritica1)
     ax.set_ylabel(caracteristica2)
@@ -135,8 +144,8 @@ def Gaus(X_train, Y_train, X_validation, Y_validation, seed, X, Y, scoring):
 
 
 dataset = getData(url)
-
-#raph(dataset,'MDVP:Fhi(Hz)','MDVP:Flo(Hz)')
+print(dataset)
+raph(dataset,'MDVP:Fhi(Hz)','MDVP:Flo(Hz)')
 #graph(dataset,'MDVP:Jitter(Abs)','MDVP:Shimmer(dB)')
 #graph(dataset,'MDVP:Shimmer(dB)','MDVP:Flo(Hz)')
 #graph(dataset,'Shimmer:APQ5','MDVP:Flo(Hz)')
@@ -150,9 +159,9 @@ dataset = getData(url)
 
 #statistics(dataset)
 
-validationSize = 0.30
-seed = 400
-knnVsGaus(dataset, seed, validationSize)
+#validationSize = 0.30
+#seed = 400
+#knnVsGaus(dataset, seed, validationSize)
 
 
 """
