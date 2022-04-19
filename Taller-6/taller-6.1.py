@@ -14,15 +14,16 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 
-url = "cmc.data"
+url = "dermatology.data"
 
 
 def getData(url):
     # Se crea un data frame
-    dataset = pandas.read_csv(url)
-    names = ['wife-age', 'wife-aeducation', 'husband-edcation', 'number-children', 'wife-religion', 'wife-working', 'husband-occupation', 
-             'standard-living','media-exposure', 'method']
-    # Se crea un data frame
+    names = ['erythema', 'scaling', 'definite-borders', 'itching', 'koebner-phenomenon', 'polygonal-papules', 
+             'follicular-papules', 'oral-mucosal','knee-elbow', 'scalp','family-history','melanin','eosinophils',
+             'PNL','fibrosis-papillary','fibrosis','acanthosis','hyperkeratosis','parakeratosis','clubbing','elongation','thinning',
+             'spongiform','munro','focal','disappearance','vacuolisation','spongiosis','saw-tooth','follicular-horn','perifollicular',
+             'inflammatory','band-like','Age','class']
     dataset = pandas.read_csv(url, names=names)
     return dataset
 
@@ -32,25 +33,16 @@ def graph(dataset, caracteritica1, caracteristica2):
     fig = plt.figure('scatter')
 
     ax = fig.add_subplot(111)
-    titulo = 'M1 vs M2 vs M3 con caract. ', caracteritica1,  'y', caracteristica2
+    titulo = 'C1 vs C2 vs C3 vs C4 vs C5 vs C6 con caract. ', caracteritica1,  'y', caracteristica2
 
     ax.set_title(titulo)
 
-    c1 = dataset.loc[dataset['method'] == 1]
-    carac1 = c1.loc[:, caracteritica1]
-    carac2 = c1.loc[:, caracteristica2]
-    ax.scatter(carac1, carac2, c='r', label='metodo 1')
+    for i in range(6):
+        c = dataset.loc[dataset['class'] == i+1]
+        carac1 = c.loc[:, caracteritica1]
+        carac2 = c.loc[:, caracteristica2]
+        ax.scatter(carac1, carac2, label=('clase ',i+1))
 
-    c2 = dataset.loc[dataset['method'] == 2]
-    carac1 = c2.loc[:, caracteritica1]
-    carac2 = c2.loc[:, caracteristica2]
-    ax.scatter(carac1, carac2, c='b', label='metodo 2')
-    
-    
-    c3 = dataset.loc[dataset['method'] == 3]
-    carac1 = c3.loc[:, caracteritica1]
-    carac2 = c3.loc[:, caracteristica2]
-    ax.scatter(carac1, carac2, c='y', label='metodo 2')
 
     ax.set_xlabel(caracteritica1)
     ax.set_ylabel(caracteristica2)
@@ -60,9 +52,9 @@ def graph(dataset, caracteritica1, caracteristica2):
 
 def statistics(dataset):
     print(dataset.describe())
-    print(dataset.groupby('status').mean())
+    print(dataset.groupby('class').mean())
     dataset.plot(kind='box', subplots=True, layout=(
-        3, 8), sharex=False, sharey=False)
+        4, 9), sharex=False, sharey=False)
     plt.show()
 
     dataset.hist()
@@ -73,10 +65,10 @@ def knnVsGaus(dataset, seed, validationSize):
 
     array = dataset.values
     # clases
-    Y = array[:, 16]
-    array = (dataset.drop(['status'], axis=1)).values
+    Y = array[:,34]
+    Y=Y.astype('int')
     # datos
-    X = array
+    X = array[:,:33]
     # Se realiza la división de los datos en los conjuntos de prueba y entrenamiento
     X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y,
                                                                                     test_size=validationSize, random_state=seed)
@@ -142,26 +134,24 @@ def Gaus(X_train, Y_train, X_validation, Y_validation, seed, X, Y, scoring):
         "Resultado clasificador GNB es ", cv_results.mean(), cv_results.std())
     print(msg)
 
-
 dataset = getData(url)
-print(dataset)
-raph(dataset,'MDVP:Fhi(Hz)','MDVP:Flo(Hz)')
-#graph(dataset,'MDVP:Jitter(Abs)','MDVP:Shimmer(dB)')
-#graph(dataset,'MDVP:Shimmer(dB)','MDVP:Flo(Hz)')
-#graph(dataset,'Shimmer:APQ5','MDVP:Flo(Hz)')
-#graph(dataset,'MDVP:Fhi(Hz)','Shimmer:APQ5')
-#graph(dataset,'spread1','MDVP:Flo(Hz)')
-#graph(dataset,'MDVP:Fhi(Hz)','spread1')
-#graph(dataset,'spread1','spread2')
-
+#print(dataset)
+# graph(dataset,'erythema','scaling')
+# graph(dataset,'itching','scalp')
+# graph(dataset,'Age','fibrosis')
+# graph(dataset,'melanin','Age')
+# graph(dataset,'hyperkeratosis','clubbing')
+# graph(dataset,'acanthosis','inflammatory')
+# graph(dataset,'focal','eosinophils')
+# graph(dataset,'parakeratosis','PNL')
 
 
 
 #statistics(dataset)
 
-#validationSize = 0.30
-#seed = 400
-#knnVsGaus(dataset, seed, validationSize)
+validationSize = 0.30
+seed = 400
+knnVsGaus(dataset, seed, validationSize)
 
 
 """
